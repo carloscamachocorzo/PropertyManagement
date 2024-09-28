@@ -18,11 +18,20 @@ namespace Million.PropertyManagement.Application.Services
 
         public async Task<Property> ExecuteAsync(PropertyDto propertyDto)
         {
-            // Lógica para validar los datos de la propiedad
-            //property.CreatedAt = DateTime.Now;
-            Property property = _mapper.Map<Property>(propertyDto);
-            await _propertyRepository.AddAsync(property);
-            return property;
+            try
+            {
+                // Lógica para validar los datos de la propiedad
+                //property.CreatedAt = DateTime.Now;
+                Property property = _mapper.Map<Property>(propertyDto);
+                await _propertyRepository.AddAsync(property);
+                return property;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

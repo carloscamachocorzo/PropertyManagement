@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Million.PropertyManagement.Domain\Million.PropertyManagement.Domain.csproj" />
+    <ProjectReference Include="..\Million.PropertyManagement.Infrastructure\Million.PropertyManagement.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Million.PropertyManagement.Application.Dtos;
 using Million.PropertyManagement.Application.Services.Interfaces;
-using Million.PropertyManagement.Infrastructure;
 
 namespace Million.PropertyManagement.Api.Controllers
 {

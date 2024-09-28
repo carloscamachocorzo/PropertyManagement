@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Million.PropertyManagement.Application.DependencyInjection;
+using Million.PropertyManagement.Infrastructure.DataAccess.Contexts;
 
 namespace Million.PropertyManagement.Api
 {
@@ -8,6 +10,9 @@ namespace Million.PropertyManagement.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Configura la cadena de conexión
+            builder.Services.AddDbContext<PropertyManagementContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
             // Agregar servicios de la capa de Application

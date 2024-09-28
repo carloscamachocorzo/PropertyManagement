@@ -7,8 +7,8 @@ namespace Million.PropertyManagement.Application.Automapper
     public sealed class GlobalMapperProfile : Profile
     {
         public GlobalMapperProfile() : base()
-        {
-            CreateMap<Property, PropertyDto>();
+        {            
+            CreateMap<Property, PropertyDto>().ReverseMap();
         }
     }
 }
