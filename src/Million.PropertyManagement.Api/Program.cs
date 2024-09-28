@@ -1,3 +1,5 @@
+using Million.PropertyManagement.Application.DependencyInjection;
+
 namespace Million.PropertyManagement.Api
 {
     public class Program
@@ -6,8 +8,10 @@ namespace Million.PropertyManagement.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
 
+
+            // Agregar servicios de la capa de Application
+            builder.Services.AddApplicationServices();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
