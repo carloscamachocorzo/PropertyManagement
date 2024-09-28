@@ -9,3 +9,5 @@
 /src/Million.PropertyManagement.Infrastructure/bin/Debug/net6.0
 /src/Million.PropertyManagement.Application/bin/Debug/net6.0
 /src/Million.PropertyManagement.Domain/bin/Debug/net6.0
+/src/Million.PropertyManagement.Api/obj
+/src/Million.PropertyManagement.Api/bin/Debug/net6.0
