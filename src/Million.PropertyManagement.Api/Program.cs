@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Million.PropertyManagement.Application.DependencyInjection;
 using Million.PropertyManagement.Infrastructure.DataAccess.Contexts;
+using NLog;
 
 namespace Million.PropertyManagement.Api
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ namespace Million.PropertyManagement.Api
             // Configura la cadena de conexión
             builder.Services.AddDbContext<PropertyManagementContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            var logger = LogManager.Setup().LoadConfigurationFromFile(String.Concat(AppDomain.CurrentDomain.BaseDirectory, "nlog.config")).GetCurrentClassLogger();
 
 
             // Agregar servicios de la capa de Application
