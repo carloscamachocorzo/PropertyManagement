@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Application", "src\Million.PropertyManagement.Application\Million.PropertyManagement.Application.csproj", "{6B896243-99B0-4AFE-8EA1-7BCBD9076046}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Api", "src\Million.PropertyManagement.Api\Million.PropertyManagement.Api.csproj", "{0A2FC949-469B-4C9D-ACAD-721F951981DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6B896243-99B0-4AFE-8EA1-7BCBD9076046}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B896243-99B0-4AFE-8EA1-7BCBD9076046}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B896243-99B0-4AFE-8EA1-7BCBD9076046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A2FC949-469B-4C9D-ACAD-721F951981DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A2FC949-469B-4C9D-ACAD-721F951981DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A2FC949-469B-4C9D-ACAD-721F951981DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A2FC949-469B-4C9D-ACAD-721F951981DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
