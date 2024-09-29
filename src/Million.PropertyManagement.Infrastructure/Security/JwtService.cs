@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Million.PropertyManagement.Domain.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace Million.PropertyManagement.Infrastructure.Security
 {
-    public class JwtService
+    public class JwtService : ITokenService
     {
         private readonly IConfiguration _configuration;
 

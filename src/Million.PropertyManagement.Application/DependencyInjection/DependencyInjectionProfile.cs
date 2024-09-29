@@ -4,6 +4,7 @@ using Million.PropertyManagement.Application.Services;
 using Million.PropertyManagement.Application.Services.Interfaces;
 using Million.PropertyManagement.Domain.Interfaces;
 using Million.PropertyManagement.Infrastructure.Repositories;
+using Million.PropertyManagement.Infrastructure.Security;
 
 namespace Million.PropertyManagement.Application.DependencyInjection
 {
@@ -13,17 +14,14 @@ namespace Million.PropertyManagement.Application.DependencyInjection
         {
             // Registrar AutoMapper
             services.AddAutoMapper(typeof(GlobalMapperProfile));
-            // Registrar servicios de la capa Application
+            // Registrar servicios de la capa Application            
+            services.AddScoped<ICreatePropertyAppService, CreatePropertyAppService>();            
+            services.AddScoped<IAuthAppService, AuthAppService>();
+            // Registrar servicios de la capa Domain
             services.AddScoped<IPropertyRepository, PropertyRepository>();
-            services.AddScoped<ICreatePropertyAppService, CreatePropertyAppService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITokenService, JwtService>();
             
-            //services.AddScoped<IOwnerService, OwnerService>();
-
-            
-
-            // Aquí puedes registrar otros servicios, como repositorios, UnitOfWork, etc.
-            // services.AddScoped<IRepository, Repository>();
-            // services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

@@ -142,12 +142,12 @@ namespace Million.PropertyManagement.Infrastructure.DataAccess.Contexts
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__Users__1788CC4CD64E555E");
+                    .HasName("PK__Users__1788CC4C583DABFE");
 
-                entity.HasIndex(e => e.Username, "UQ__Users__536C85E4E51EEA16")
+                entity.HasIndex(e => e.Username, "UQ__Users__536C85E469E62F3C")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534FD7776E3")
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D1053483BD82A1")
                     .IsUnique();
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -158,9 +158,9 @@ namespace Million.PropertyManagement.Infrastructure.DataAccess.Contexts
 
                 entity.Property(e => e.LastLogin).HasColumnType("datetime");
 
-                entity.Property(e => e.PasswordHash)
-                    .IsRequired()
-                    .HasMaxLength(255);
+                entity.Property(e => e.PasswordHash).HasMaxLength(64);
+
+                entity.Property(e => e.PasswordSalt).HasMaxLength(128);
 
                 entity.Property(e => e.Salt)
                     .IsRequired()

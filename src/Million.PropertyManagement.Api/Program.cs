@@ -42,9 +42,9 @@ namespace Million.PropertyManagement.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = $"Davinci - {_APINAME}",
+                    Title = $"MILLION - {_APINAME}",
                     Version = "Version inicial",
-                    Description = "Servicios para novedades (Contributivo y Subsidiado)",
+                    Description = "Servicios para gestion de propiedades Hoteleras (https://www.millioncareers.com.co/)",
                     Contact = new OpenApiContact
                     {
                         Name = "Ophelia Suite"
@@ -63,7 +63,32 @@ namespace Million.PropertyManagement.Api
                 c.EnableAnnotations();
                 // Filtra tipos innecesarios
                 c.CustomSchemaIds(type => type.FullName); // Ayuda a evitar conflictos de nombres de clases
-                                                          //c.SchemaFilter<CustomSchemaFilter>(); // Filtro para manejar tipos genéricos complejos
+
+                // Configurar JWT en Swagger
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Introduce 'Bearer' [espacio] y luego tu token en el cuadro de texto a continuación.\n\nEjemplo: \"Bearer 12345abcdef\""
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
 
             // Agrega la autenticación JWT
@@ -104,20 +129,6 @@ namespace Million.PropertyManagement.Api
             app.MapControllers();
 
             app.Run();
-        }
-    }
-}
-public class CustomSchemaFilter : ISchemaFilter
-{
-    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
-    {
-        // Aquí puedes manejar tipos genéricos como RequestResult<Property>
-        if (context.Type.IsGenericType && context.Type.GetGenericTypeDefinition() == typeof(RequestResult<>) ||
-            context.Type.Namespace.StartsWith("Microsoft.EntityFrameworkCore"))
-        {
-            schema.Properties.Clear();
-            schema.Properties.Add("data", new OpenApiSchema { Type = "object" });
-            // Agregar más propiedades según sea necesario
         }
     }
 }
