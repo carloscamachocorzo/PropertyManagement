@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Million.PropertyManagement.Application.Dtos;
 using Million.PropertyManagement.Application.Services.Interfaces;
+using Million.PropertyManagement.Common;
 using Million.PropertyManagement.Domain.Interfaces;
 using Million.PropertyManagement.Infrastructure;
 using System.Diagnostics;
@@ -25,14 +26,15 @@ namespace Million.PropertyManagement.Application.Services
             _logger= logger;
         }
 
-        public async Task<Property> ExecuteAsync(PropertyDto propertyDto)
+        public async Task<RequestResult<Property>> ExecuteAsync(PropertyDto propertyDto)
         {
             try
             {
                 // Lógica para validar los datos de la propiedad                
                 Property property = _mapper.Map<Property>(propertyDto);
                 await _propertyRepository.AddAsync(property);
-                return property;
+                // Devuelve una respuesta exitosa
+                return RequestResult<Property>.CreateSuccessful(property);
             }
             catch (Exception ex)
             {
@@ -43,7 +45,9 @@ namespace Million.PropertyManagement.Application.Services
                     //Logger.WriteInfoMessage(ex.Message);
                 }
                 _logger.LogError(ex, className, (new StackFrame().GetMethod()).Name + (new StackFrame().GetFileLineNumber()));
-                return null;
+                
+            //return new  RequestResult<PropertyDto>.CreateError($"Error inesperado: {ex.Message}");
+                return RequestResult<Property>.CreateError($"Error inesperado: {ex.Message}");
             }
             
         }

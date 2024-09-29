@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Domain", "src\Million.PropertyManagement.Domain\Million.PropertyManagement.Domain.csproj", "{A53B38B5-CD8C-46DA-B039-E14DCE2D0492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Million.PropertyManagement.Domain", "src\Million.PropertyManagement.Domain\Million.PropertyManagement.Domain.csproj", "{A53B38B5-CD8C-46DA-B039-E14DCE2D0492}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Infrastructure", "src\Million.PropertyManagement.Infrastructure\Million.PropertyManagement.Infrastructure.csproj", "{B111AF33-AB99-4096-9C74-49732BC436CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Million.PropertyManagement.Infrastructure", "src\Million.PropertyManagement.Infrastructure\Million.PropertyManagement.Infrastructure.csproj", "{B111AF33-AB99-4096-9C74-49732BC436CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Application", "src\Million.PropertyManagement.Application\Million.PropertyManagement.Application.csproj", "{6B896243-99B0-4AFE-8EA1-7BCBD9076046}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Million.PropertyManagement.Application", "src\Million.PropertyManagement.Application\Million.PropertyManagement.Application.csproj", "{6B896243-99B0-4AFE-8EA1-7BCBD9076046}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Api", "src\Million.PropertyManagement.Api\Million.PropertyManagement.Api.csproj", "{0A2FC949-469B-4C9D-ACAD-721F951981DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Million.PropertyManagement.Api", "src\Million.PropertyManagement.Api\Million.PropertyManagement.Api.csproj", "{0A2FC949-469B-4C9D-ACAD-721F951981DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Common", "src\Million.PropertyManagement.Common\Million.PropertyManagement.Common.csproj", "{45042709-7AD2-40E8-8F0F-43382E664454}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0A2FC949-469B-4C9D-ACAD-721F951981DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A2FC949-469B-4C9D-ACAD-721F951981DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A2FC949-469B-4C9D-ACAD-721F951981DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45042709-7AD2-40E8-8F0F-43382E664454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45042709-7AD2-40E8-8F0F-43382E664454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45042709-7AD2-40E8-8F0F-43382E664454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45042709-7AD2-40E8-8F0F-43382E664454}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

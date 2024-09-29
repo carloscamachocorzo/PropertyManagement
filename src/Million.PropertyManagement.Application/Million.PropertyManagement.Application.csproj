@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Million.PropertyManagement.Common\Million.PropertyManagement.Common.csproj" />
     <ProjectReference Include="..\Million.PropertyManagement.Domain\Million.PropertyManagement.Domain.csproj" />
     <ProjectReference Include="..\Million.PropertyManagement.Infrastructure\Million.PropertyManagement.Infrastructure.csproj" />
   </ItemGroup>
