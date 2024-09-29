@@ -15,7 +15,7 @@ namespace Million.PropertyManagement.Application.Services
         private readonly IPropertyRepository _propertyRepository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
-        private string className = new StackFrame().GetMethod().ReflectedType.Name;
+        private string className = new StackFrame().GetMethod()?.ReflectedType?.Name ?? "CreatePropertyAppService";
         private readonly ILogger<CreatePropertyAppService> _logger;
         public CreatePropertyAppService(IPropertyRepository propertyRepository, IMapper mapper,
             IConfiguration configuration, ILogger<CreatePropertyAppService> logger)

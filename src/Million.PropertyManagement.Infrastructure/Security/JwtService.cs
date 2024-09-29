@@ -7,9 +7,16 @@ using System.Text;
 
 namespace Million.PropertyManagement.Infrastructure.Security
 {
+    /// <summary>
+    /// Servicio que gestiona la generación de tokens JWT.
+    /// </summary>
     public class JwtService : ITokenService
     {
         private readonly IConfiguration _configuration;
+        /// <summary>
+        /// Constructor de la clase <see cref="JwtService"/>.
+        /// </summary>
+        /// <param name="configuration">Configuración de la aplicación utilizada para obtener los parámetros del token JWT.</param>
 
         public JwtService(IConfiguration configuration)
         {
