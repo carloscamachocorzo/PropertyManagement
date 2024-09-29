@@ -12,3 +12,5 @@
 /src/Million.PropertyManagement.Api/obj
 /src/Million.PropertyManagement.Api/bin/Debug/net6.0
 /.vs/ProjectEvaluation
+/src/Million.PropertyManagement.Common/bin/Debug/net6.0
+/src/Million.PropertyManagement.Common/obj
