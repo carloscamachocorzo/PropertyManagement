@@ -21,6 +21,7 @@ namespace Million.PropertyManagement.Infrastructure.DataAccess.Contexts
         public virtual DbSet<Property> Property { get; set; }
         public virtual DbSet<PropertyImage> PropertyImage { get; set; }
         public virtual DbSet<PropertyTrace> PropertyTrace { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -69,6 +70,7 @@ namespace Million.PropertyManagement.Infrastructure.DataAccess.Contexts
                 entity.Property(e => e.IdOwner).HasComment("Id del propietario de la propiedad");
 
                 entity.Property(e => e.Name)
+                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasComment("Nombre de la propiedad");
@@ -135,6 +137,40 @@ namespace Million.PropertyManagement.Infrastructure.DataAccess.Contexts
                     .HasForeignKey<PropertyTrace>(d => d.IdPropertyTrace)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PropertyTrace_Property");
+            });
+
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.HasKey(e => e.UserId)
+                    .HasName("PK__Users__1788CC4CD64E555E");
+
+                entity.HasIndex(e => e.Username, "UQ__Users__536C85E4E51EEA16")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534FD7776E3")
+                    .IsUnique();
+
+                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.LastLogin).HasColumnType("datetime");
+
+                entity.Property(e => e.PasswordHash)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Salt)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.Username)
+                    .IsRequired()
+                    .HasMaxLength(100);
             });
 
             OnModelCreatingPartial(modelBuilder);

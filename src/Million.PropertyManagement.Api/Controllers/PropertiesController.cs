@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Million.PropertyManagement.Application.Dtos;
 using Million.PropertyManagement.Application.Services.Interfaces;
 using Million.PropertyManagement.Common;
@@ -16,6 +17,7 @@ namespace Million.PropertyManagement.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]  // Solo usuarios autenticados podrán acceder
         public async Task<ActionResult<RequestResult<CreatePropertyResponseDto>>> CreateProperty([FromBody] PropertyDto propertyDto)
         {
             var result = await _createPropertyAppService.ExecuteAsync(propertyDto);

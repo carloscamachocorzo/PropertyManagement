@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Million.PropertyManagement.Application.DependencyInjection;
 using Million.PropertyManagement.Common;
@@ -8,6 +10,7 @@ using NLog;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using System.Text;
 
 namespace Million.PropertyManagement.Api
 {
@@ -28,40 +31,62 @@ namespace Million.PropertyManagement.Api
 
             var logger = LogManager.Setup().LoadConfigurationFromFile(String.Concat(AppDomain.CurrentDomain.BaseDirectory, "nlog.config")).GetCurrentClassLogger();
 
-           
+
             // Agregar servicios de la capa de Application
             builder.Services.AddApplicationServices();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-              
-          builder.Services.AddSwaggerGen(c =>
-          {
-              c.SwaggerDoc("v1", new OpenApiInfo
-              {
-                  Title = $"Davinci - {_APINAME}",
-                  Version = "Version inicial",
-                  Description = "Servicios para novedades (Contributivo y Subsidiado)",
-                  Contact = new OpenApiContact
-                  {
-                      Name = "Ophelia Suite"
-                  }
-              });
-              c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
-              c.OperationFilter<AddResponseHeadersFilter>();
-              c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
-              c.OperationFilter<SecurityRequirementsOperationFilter>();
-              ////Agregando comentarios Xml a la documentación
-              //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-              //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-              //c.IncludeXmlComments(xmlPath);
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = $"Davinci - {_APINAME}",
+                    Version = "Version inicial",
+                    Description = "Servicios para novedades (Contributivo y Subsidiado)",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Ophelia Suite"
+                    }
+                });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
-              c.EnableAnnotations();
-              // Filtra tipos innecesarios
-              c.CustomSchemaIds(type => type.FullName); // Ayuda a evitar conflictos de nombres de clases
-              //c.SchemaFilter<CustomSchemaFilter>(); // Filtro para manejar tipos genéricos complejos
-          });
+                c.OperationFilter<AddResponseHeadersFilter>();
+                c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
+                ////Agregando comentarios Xml a la documentación
+                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                //c.IncludeXmlComments(xmlPath);
+
+                c.EnableAnnotations();
+                // Filtra tipos innecesarios
+                c.CustomSchemaIds(type => type.FullName); // Ayuda a evitar conflictos de nombres de clases
+                                                          //c.SchemaFilter<CustomSchemaFilter>(); // Filtro para manejar tipos genéricos complejos
+            });
+
+            // Agrega la autenticación JWT
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]))
+                };
+            });
+
+            builder.Services.AddAuthorization();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -71,6 +96,8 @@ namespace Million.PropertyManagement.Api
                 app.UseSwaggerUI();
             }
 
+            // Habilitar autenticación y autorización en la aplicación
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
