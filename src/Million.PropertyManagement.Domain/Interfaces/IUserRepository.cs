@@ -5,5 +5,6 @@ namespace Million.PropertyManagement.Domain.Interfaces
     public interface IUserRepository
     {
         Users GetUserByUsername(string username);
+        Task AddAsync(Users user);
     }
 }

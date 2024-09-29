@@ -8,6 +8,10 @@
         public IEnumerable<string> Messages { get; set; }
         public T Result { get; set; }
 
+        public RequestResult()
+        {
+            
+        }
         // Constructor privado
         private RequestResult(bool isSuccessful, bool isError, string errorMessage, IEnumerable<string> messages, T result)
         {

@@ -9,10 +9,12 @@ namespace Million.PropertyManagement.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthAppService _authService;
+        private readonly IUserAppService _userAppService;
 
-        public AuthController(IAuthAppService authService)
+        public AuthController(IAuthAppService authService, IUserAppService userAppService)
         {
             _authService = authService;
+            _userAppService = userAppService;
         }
 
         [HttpPost("login")]
@@ -27,6 +29,17 @@ namespace Million.PropertyManagement.Api.Controllers
             {
                 return Unauthorized("Credenciales inválidas");
             }
+        }
+        [HttpPost("register")]
+        [Consumes("application/x-www-form-urlencoded")]
+        public async Task<IActionResult> Register([FromForm] RegisterUserRequestDto request)
+        {
+            var result = await _userAppService.CreateUserAsync(request);
+
+            if (!result.IsSuccessful)
+                return BadRequest(result.ErrorMessage);
+
+            return Ok(result);
         }
     }
 }
