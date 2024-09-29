@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Million.PropertyManagement.Application.Dtos;
-using Million.PropertyManagement.Application.Services;
 using Million.PropertyManagement.Application.Services.Interfaces;
 using Million.PropertyManagement.Common;
 
@@ -18,15 +16,12 @@ namespace Million.PropertyManagement.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RequestResult<Property>>> CreateProperty([FromBody] PropertyDto propertyDto)
+        public async Task<ActionResult<RequestResult<CreatePropertyResponseDto>>> CreateProperty([FromBody] PropertyDto propertyDto)
         {
-            // Llamada al servicio que devuelve RequestResult<Property>
             var result = await _createPropertyAppService.ExecuteAsync(propertyDto);
 
-            // Verifica si la operación fue exitosa
             if (result.IsSuccessful)
             {
-                // Devuelve un 201 (Created) con el RequestResult y la propiedad creada
                 return CreatedAtAction(nameof(CreateProperty), new { id = result.Result.IdProperty }, result);
             }
 
