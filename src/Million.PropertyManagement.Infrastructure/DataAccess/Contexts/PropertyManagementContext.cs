@@ -162,10 +162,6 @@ namespace Million.PropertyManagement.Infrastructure.DataAccess.Contexts
 
                 entity.Property(e => e.PasswordSalt).HasMaxLength(128);
 
-                entity.Property(e => e.Salt)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
                 entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.Username)

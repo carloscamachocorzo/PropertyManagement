@@ -36,8 +36,7 @@ namespace Million.PropertyManagement.Application.Services
                 PasswordSalt = passwordSalt,
                 Email = request.Email,
                 IsActive = true,
-                CreatedAt = DateTime.UtcNow,
-                Salt = ""
+                CreatedAt = DateTime.UtcNow                
 
             };
 
@@ -45,7 +44,7 @@ namespace Million.PropertyManagement.Application.Services
             await _userRepository.AddAsync(user);
 
             // Retornar el resultado exitoso
-            return new RequestResult<bool> { IsSuccessful = true };
+            return new RequestResult<bool> { IsSuccessful = true,  Messages = new string[] { "usuario creado correctamente" } };
         }
 
     }

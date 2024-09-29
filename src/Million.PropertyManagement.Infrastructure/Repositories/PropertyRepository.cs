@@ -24,7 +24,7 @@ namespace Million.PropertyManagement.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Property> GetByIdAsync(int id)
+        public async Task<Property?> GetByIdAsync(int id)
         {
             return await _context.Property.FindAsync(id);
         }

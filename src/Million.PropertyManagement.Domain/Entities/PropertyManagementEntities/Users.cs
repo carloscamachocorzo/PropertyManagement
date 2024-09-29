@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Million.PropertyManagement.Infrastructure
+﻿namespace Million.PropertyManagement.Infrastructure
 {
     public partial class Users
     {
@@ -9,7 +6,6 @@ namespace Million.PropertyManagement.Infrastructure
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public string Salt { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }

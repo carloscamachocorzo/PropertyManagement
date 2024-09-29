@@ -38,18 +38,9 @@ namespace Million.PropertyManagement.Application.Services
             }
             catch (Exception ex)
             {
-
-                if (Convert.ToBoolean(_configuration.GetSection("logger").Value))
-                {
-                    //Logger.WriteException(ex);
-                    //Logger.WriteInfoMessage(ex.Message);
-                }
-                _logger.LogError(ex, className, (new StackFrame().GetMethod()).Name + (new StackFrame().GetFileLineNumber()));
-                
-            //return new  RequestResult<PropertyDto>.CreateError($"Error inesperado: {ex.Message}");
+                _logger.LogError(ex, className, (new StackFrame().GetMethod())?.Name + (new StackFrame().GetFileLineNumber()));                           
                 return RequestResult<Property>.CreateError($"Error inesperado: {ex.Message}");
-            }
-            
+            }            
         }
     }
 }
