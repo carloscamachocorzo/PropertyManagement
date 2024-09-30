@@ -33,14 +33,15 @@ namespace Million.PropertyManagement.Application.Services
         #endregion
 
         #region Metodos Publicos
-        public string Authenticate(string username, string password)
+        public async Task<string> AuthenticateAsync(string username, string password)
         {
             try
             {
                 // 1. Validar las credenciales contra la capa de dominio
-                var user = _userRepository.GetUserByUsername(username);
+                var user = await _userRepository.GetUserByUsernameAsync(username);
                 if (user == null)
                     return string.Empty;
+
                 // 2. Generar el token (por ejemplo, usando JWT)
                 bool isValid = VerifyPassword(password, user.PasswordHash, user.PasswordSalt);
                 if (isValid)
@@ -51,10 +52,11 @@ namespace Million.PropertyManagement.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, className, new StackFrame().GetMethod()?.Name ?? "UnknownMethod" + (new StackFrame().GetFileLineNumber()));
+                _logger.LogError(ex, $"{className} - {new StackFrame().GetMethod()?.Name ?? "UnknownMethod"}:{new StackFrame().GetFileLineNumber()}");
                 return string.Empty;
             }
         }
+
         #endregion
 
         #region Metodos privados

@@ -28,34 +28,66 @@ namespace Million.PropertyManagement.Application.Services
         #region Metodos publicos       
         public async Task<RequestResult<bool>> CreateUserAsync(RegisterUserRequestDto request)
         {
-            // Validar si el usuario ya existe
-            var existingUser =  _userRepository.GetUserByUsername(request.Username);
-            if (existingUser != null)
+            try
             {
-                return new RequestResult<bool> { IsSuccessful = false, Messages = new string[] { "usuario ya existe" } };
+                // Validar si el usuario ya existe
+                var existingUser = await _userRepository.GetUserByUsernameAsync(request.Username);
+                if (existingUser != null)
+                {
+                    return RequestResult<bool>.CreateError("El usuario ya existe.");
+                }
+                if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 6)
+                {
+                    return RequestResult<bool>.CreateError("La contraseña debe tener al menos 6 caracteres.");
+                }
+
+                if (!IsValidEmail(request.Email))
+                {
+                    return RequestResult<bool>.CreateError("El correo electrónico proporcionado no es válido.");
+                }
+
+                // Hashear la contraseña
+                var (passwordHash, passwordSalt) = _passwordHasher.HashPassword(request.Password);
+
+                // Crear la entidad usuario
+                var user = new Users
+                {
+                    Username = request.Username,
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt,
+                    Email = request.Email,
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow
+
+                };
+
+                // Guardar el usuario
+                await _userRepository.AddAsync(user);
+
+                // Retornar el resultado exitoso
+                return RequestResult<bool>.CreateSuccessful(true, new string[] { "Usuario creado correctamente." });
+            }
+            catch (Exception ex)
+            {
+                return RequestResult<bool>.CreateError($"Error inesperado: {ex.Message}");
             }
 
-            // Hashear la contraseña
-            var (passwordHash, passwordSalt) = _passwordHasher.HashPassword(request.Password);
-
-            // Crear la entidad usuario
-            var user = new Users
-            {
-                Username = request.Username,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                Email = request.Email,
-                IsActive = true,
-                CreatedAt = DateTime.UtcNow                
-
-            };
-
-            // Guardar el usuario
-            await _userRepository.AddAsync(user);
-
-            // Retornar el resultado exitoso
-            return new RequestResult<bool> { IsSuccessful = true,  Messages = new string[] { "usuario creado correctamente" } };
         }
+        #endregion
+        #region Metodos privados
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         #endregion
     }
 }

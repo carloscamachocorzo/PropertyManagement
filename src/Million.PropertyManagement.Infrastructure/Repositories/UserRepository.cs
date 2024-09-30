@@ -1,4 +1,5 @@
-﻿using Million.PropertyManagement.Domain.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Million.PropertyManagement.Domain.Interfaces;
 using Million.PropertyManagement.Infrastructure.DataAccess.Contexts;
 
 namespace Million.PropertyManagement.Infrastructure.Repositories
@@ -19,10 +20,11 @@ namespace Million.PropertyManagement.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public Users? GetUserByUsername(string username)
+        public async Task<Users?> GetUserByUsernameAsync(string username)
         {
-            return _dbContext.Users.SingleOrDefault(u => u.Username == username);
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.Username == username);
         }
+
         public async Task AddAsync(Users user)
         {
             await _dbContext.Users.AddAsync(user);

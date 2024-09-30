@@ -96,11 +96,7 @@ namespace Million.PropertyManagement.Application.Services
                     return new RequestResult<bool> { IsSuccessful = false, IsError = true, Messages = new string[] { $"No se encontro el id [{propertyId}] de la propiedad para actualizar" } };
                 }
                 // Paso 2: Actualizar los campos de la propiedad
-                property.Name = updateDto.Name ?? property.Name;
-                property.Address = updateDto.Address ?? property.Address;
-                property.Price = updateDto.Price ?? property.Price;
-                property.CodeInternal = updateDto.CodeInternal ?? property.CodeInternal;
-                property.Year = updateDto.Year ?? property.Year;
+                UpdatePropertyFields(property, updateDto);
 
                 await _propertyRepository.UpdateAsync(property);
                 return new RequestResult<bool> { IsSuccessful = true, Messages = new string[] { "propiedad actualizada correctamente" } };
@@ -134,6 +130,18 @@ namespace Million.PropertyManagement.Application.Services
             });
 
             return propertyDtos;
+        }
+        #endregion
+
+        #region Metodos privados
+
+        private void UpdatePropertyFields(Property property, PropertyUpdateDto updateDto)
+        {
+            property.Name = updateDto.Name ?? property.Name;
+            property.Address = updateDto.Address ?? property.Address;
+            property.Price = updateDto.Price ?? property.Price;
+            property.CodeInternal = updateDto.CodeInternal ?? property.CodeInternal;
+            property.Year = updateDto.Year ?? property.Year;
         }
         #endregion
     }

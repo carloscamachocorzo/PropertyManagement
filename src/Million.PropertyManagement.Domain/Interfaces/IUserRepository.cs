@@ -11,7 +11,7 @@ namespace Million.PropertyManagement.Domain.Interfaces
         /// <returns>
         /// El usuario correspondiente al nombre de usuario proporcionado, o <c>null</c> si no se encuentra.
         /// </returns>
-        Users? GetUserByUsername(string username);
+        Task<Users?> GetUserByUsernameAsync(string username);
         /// <summary>
         /// Agrega un nuevo usuario a la base de datos de manera asíncrona.
         /// </summary>

@@ -35,17 +35,19 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="401">Devuelve un error de autenticación si las credenciales no son válidas.</response>
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequestDto request)
+         
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
+            string token = await _authService.AuthenticateAsync(request.Username, request.Password);
 
-            var token = _authService.Authenticate(request.Username, request.Password);
             if (string.IsNullOrEmpty(token))
             {
-                return Unauthorized("Credenciales inválidas");
+                return Unauthorized(new { message = "Credenciales inválidas" });
             }
 
-            return Ok(new { Token = token });
+            return Ok(new { Token = token, TokenType = "Bearer" });
         }
+
         /// <summary>
         /// Registra un nuevo usuario en el sistema.
         /// </summary>

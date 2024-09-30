@@ -13,7 +13,7 @@ namespace Million.PropertyManagement.Api.Controllers
     [ApiController]
     public class PropertiesController : ControllerBase
     {
-        private readonly IPropertyAppService _createPropertyAppService;
+        private readonly IPropertyAppService _propertyAppService;
         private readonly IPropertyImageAppService _propertyImageAppService;
         /// <summary>
         /// Inicializa una nueva instancia del controlador de propiedades.
@@ -21,9 +21,9 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <param name="createProperty">Servicio para gestionar propiedades.</param>
         /// <param name="propertyImageAppService">Servicio para gestionar imágenes de propiedades.</param>
 
-        public PropertiesController(IPropertyAppService createProperty, IPropertyImageAppService propertyImageAppService)
+        public PropertiesController(IPropertyAppService propertyAppService, IPropertyImageAppService propertyImageAppService)
         {
-            _createPropertyAppService = createProperty;
+            _propertyAppService = propertyAppService;
             _propertyImageAppService = propertyImageAppService;
 
         }
@@ -35,12 +35,11 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="201">Si la propiedad fue creada exitosamente.</response>
         /// <response code="400">Si ocurrió un error controlado o no controlado durante la creación.</response>
 
-        [HttpPost]
-        [Route(nameof(CreateProperty))]
+        [HttpPost("create")] 
         [Authorize]   
         public async Task<ActionResult<RequestResult<CreatePropertyResponseDto>>> CreateProperty([FromBody] PropertyDto propertyDto)
         {
-            var result = await _createPropertyAppService.ExecuteAsync(propertyDto);
+            var result = await _propertyAppService.ExecuteAsync(propertyDto);
 
             if (result.IsSuccessful)
             {
@@ -72,10 +71,10 @@ namespace Million.PropertyManagement.Api.Controllers
         [Authorize]
         public async Task<ActionResult<RequestResult<bool>>> AddPropertyImage(int propertyId, IFormFile imageFile)
         {
-            if (imageFile == null || imageFile.Length == 0)
+            if (imageFile == null || imageFile.Length == 0 || !imageFile.ContentType.StartsWith("image/"))
             {
                 // Retornar error si el archivo es nulo o vacío en un RequestResult
-                var errorResult = RequestResult<bool>.CreateError("El archivo de imagen es inválido.");
+                var errorResult = RequestResult<bool>.CreateError("El archivo de imagen es inválido o no es una imagen.");
                 return BadRequest(errorResult);
             }
 
@@ -111,7 +110,7 @@ namespace Million.PropertyManagement.Api.Controllers
         [HttpPatch("{propertyId}/price")]                
         public async Task<IActionResult> UpdatePrice(int propertyId, decimal newPrice)
         {
-            var result = await _createPropertyAppService.UpdatePriceAsync(propertyId, newPrice);
+            var result = await _propertyAppService.UpdatePriceAsync(propertyId, newPrice);
 
             if (result.IsSuccessful)
             {
@@ -143,7 +142,7 @@ namespace Million.PropertyManagement.Api.Controllers
         [Authorize]        
         public async Task<IActionResult> UpdateProperty(int propertyId, PropertyUpdateDto updateDto)
         {
-            var result = await _createPropertyAppService.UpdatePropertyAsync(propertyId, updateDto);
+            var result = await _propertyAppService.UpdatePropertyAsync(propertyId, updateDto);
 
             if (result.IsSuccessful)
             {
@@ -174,7 +173,7 @@ namespace Million.PropertyManagement.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetPropertiesWithFilters([FromQuery] PropertyFilterDto filter)
         {
-            var properties = await _createPropertyAppService.GetPropertiesAsync(filter);
+            var properties = await _propertyAppService.GetPropertiesAsync(filter);
 
             if (!properties.Any()) // Si no se encuentran propiedades
             {

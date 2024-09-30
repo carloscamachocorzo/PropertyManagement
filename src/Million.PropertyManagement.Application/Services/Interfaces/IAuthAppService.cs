@@ -10,6 +10,6 @@
         /// <returns>
         /// El token JWT generado si las credenciales son correctas; de lo contrario, una cadena vacía.
         /// </returns>  
-        string Authenticate(string username, string password);
+        Task<string> AuthenticateAsync(string username, string password);
     }
 }
