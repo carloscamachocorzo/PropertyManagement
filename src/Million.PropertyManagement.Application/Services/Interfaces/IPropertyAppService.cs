@@ -31,6 +31,6 @@ namespace Million.PropertyManagement.Application.Services.Interfaces
         /// </summary>
         /// <param name="filter">Filtros para aplicar en la búsqueda de propiedades.</param>
         /// <returns>Lista de propiedades que cumplen con los filtros especificados.</returns>
-        Task<IEnumerable<Property>> GetPropertiesAsync(PropertyFilterDto filter);
+        Task<IEnumerable<PropertyDto>> GetPropertiesAsync(PropertyFilterDto filter);
     }
 }

@@ -60,7 +60,13 @@ namespace Million.PropertyManagement.Application.Services
         {
             try
             {
-                // Paso 1: Verificar si la propiedad existe en la base de datos
+                // Paso 1: Validar que el precio no sea negativo
+                if (newPrice<=0)
+                {
+                    return new RequestResult<bool> { IsSuccessful = false, IsError = true, Messages = new string[] { $"el precio  [{newPrice}] debe ser mayor de cero" } };
+                }
+
+                // Paso 2: Verificar si la propiedad existe en la base de datos
                 var property = await _propertyRepository.GetByIdAsync(propertyId);
                 if (property == null)
                 {
@@ -108,7 +114,7 @@ namespace Million.PropertyManagement.Application.Services
         }
        
 
-        public async Task<IEnumerable<Property>> GetPropertiesAsync(PropertyFilterDto filter)
+        public async Task<IEnumerable<PropertyDto>> GetPropertiesAsync(PropertyFilterDto filter)
         {
             // Registrar log los filtros aplicados
             _logger.LogInformation("Filtros aplicados: Nombre={Name}, Precio Mínimo={MinPrice}, Precio Máximo={MaxPrice}, Año={Year}, Tamaño de página={PageSize}, Número de página={PageNumber}",
@@ -127,7 +133,7 @@ namespace Million.PropertyManagement.Application.Services
                 Year = p.Year ?? 0
             });
 
-            return (IEnumerable<Property>)propertyDtos;
+            return propertyDtos;
         }
         #endregion
     }

@@ -36,6 +36,7 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="400">Si ocurrió un error controlado o no controlado durante la creación.</response>
 
         [HttpPost]
+        [Route(nameof(CreateProperty))]
         [Authorize]   
         public async Task<ActionResult<RequestResult<CreatePropertyResponseDto>>> CreateProperty([FromBody] PropertyDto propertyDto)
         {
@@ -67,6 +68,7 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="400">Si el archivo de imagen es inválido o si ocurrió un error al agregarla.</response>
 
         [HttpPost]
+        [Route(nameof(AddPropertyImage))]
         [Authorize]
         public async Task<ActionResult<RequestResult<bool>>> AddPropertyImage(int propertyId, IFormFile imageFile)
         {
@@ -105,8 +107,8 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="200">Si el precio fue actualizado exitosamente.</response>
         /// <response code="400">Si ocurrió un error durante la actualización del precio.</response>
 
-        [HttpPut("{propertyId}/price")]
         [Authorize]
+        [HttpPatch("{propertyId}/price")]                
         public async Task<IActionResult> UpdatePrice(int propertyId, decimal newPrice)
         {
             var result = await _createPropertyAppService.UpdatePriceAsync(propertyId, newPrice);
@@ -137,7 +139,8 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="200">Si la propiedad fue actualizada exitosamente.</response>
         /// <response code="400">Si ocurrió un error durante la actualización de la propiedad.</response>
 
-        [HttpPut("{propertyId}")]
+        [HttpPut("{propertyId}")]        
+        [Authorize]        
         public async Task<IActionResult> UpdateProperty(int propertyId, PropertyUpdateDto updateDto)
         {
             var result = await _createPropertyAppService.UpdatePropertyAsync(propertyId, updateDto);
@@ -167,6 +170,8 @@ namespace Million.PropertyManagement.Api.Controllers
 
 
         [HttpGet]
+        [Route(nameof(GetPropertiesWithFilters))]
+        [Authorize]
         public async Task<IActionResult> GetPropertiesWithFilters([FromQuery] PropertyFilterDto filter)
         {
             var properties = await _createPropertyAppService.GetPropertiesAsync(filter);

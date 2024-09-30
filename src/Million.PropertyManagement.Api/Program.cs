@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Million.PropertyManagement.Application.DependencyInjection;
@@ -20,10 +21,14 @@ namespace Million.PropertyManagement.Api
         /// Nombre API
         /// </summary>
         private const string _APINAME = "Gestor de propiedades";
-        public IConfiguration Configuration { get; }
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            // Configurar logging
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
+            builder.Logging.AddFile("Logs/myapp-{Date}.txt"); // Necesitarás agregar un paquete NuGet para el logging en archivos
 
             // Configura la cadena de conexión
             builder.Services.AddDbContext<PropertyManagementContext>(options =>
@@ -47,7 +52,7 @@ namespace Million.PropertyManagement.Api
                     Description = "Servicios para gestion de propiedades Hoteleras (https://www.millioncareers.com.co/)",
                     Contact = new OpenApiContact
                     {
-                        Name = "Ophelia Suite"
+                        Name = "Carlos Camacho"
                     }
                 });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
@@ -55,10 +60,7 @@ namespace Million.PropertyManagement.Api
                 c.OperationFilter<AddResponseHeadersFilter>();
                 c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
-                ////Agregando comentarios Xml a la documentación
-                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //c.IncludeXmlComments(xmlPath);
+
 
                 c.EnableAnnotations();
                 // Filtra tipos innecesarios
@@ -91,27 +93,43 @@ namespace Million.PropertyManagement.Api
                 });
             });
 
-            // Agrega la autenticación JWT
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]))
-                };
-            });
+            //// Agrega la autenticación JWT
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(options =>
+            //{
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidateAudience = true,
+            //        ValidateLifetime = true,
+            //        ValidateIssuerSigningKey = true,
+            //        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            //        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"])),
+            //        ClockSkew = TimeSpan.Zero  // Reduce la tolerancia en la validación de expiración del token
+            //    };
+            //});
+            // Autenticación con Jwt
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                            ValidAudience = builder.Configuration["JwtSettings:Issuer"],
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]))
+                        };
+                    });
 
-            builder.Services.AddAuthorization();
+            //builder.Services.AddAuthorization();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -124,7 +142,6 @@ namespace Million.PropertyManagement.Api
             // Habilitar autenticación y autorización en la aplicación
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

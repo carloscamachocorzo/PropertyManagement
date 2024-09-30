@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Million.PropertyManagement.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Million.PropertyManagement.Api", "src\Million.PropertyManagement.Api\Million.PropertyManagement.Api.csproj", "{0A2FC949-469B-4C9D-ACAD-721F951981DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Common", "src\Million.PropertyManagement.Common\Million.PropertyManagement.Common.csproj", "{45042709-7AD2-40E8-8F0F-43382E664454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Million.PropertyManagement.Common", "src\Million.PropertyManagement.Common\Million.PropertyManagement.Common.csproj", "{45042709-7AD2-40E8-8F0F-43382E664454}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Million.PropertyManagement.Tests.Controllers", "src\Million.PropertyManagement.Tests.Controllers\Million.PropertyManagement.Tests.Controllers.csproj", "{00CF403A-A392-45FB-ACEC-275A9F6BA7F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{45042709-7AD2-40E8-8F0F-43382E664454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45042709-7AD2-40E8-8F0F-43382E664454}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45042709-7AD2-40E8-8F0F-43382E664454}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CF403A-A392-45FB-ACEC-275A9F6BA7F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CF403A-A392-45FB-ACEC-275A9F6BA7F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CF403A-A392-45FB-ACEC-275A9F6BA7F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CF403A-A392-45FB-ACEC-275A9F6BA7F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
