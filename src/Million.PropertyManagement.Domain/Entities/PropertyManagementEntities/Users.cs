@@ -1,4 +1,7 @@
-﻿namespace Million.PropertyManagement.Infrastructure
+﻿using System;
+using System.Collections.Generic;
+
+namespace Million.PropertyManagement.Infrastructure
 {
     public partial class Users
     {

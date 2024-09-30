@@ -16,7 +16,7 @@ namespace Million.PropertyManagement.Infrastructure
         /// <summary>
         /// Url de la imagen del archivo de la propiedad
         /// </summary>
-        public string File { get; set; }
+        public string FileImage { get; set; }
         /// <summary>
         /// estado Habilitado de la propiedad
         /// </summary>

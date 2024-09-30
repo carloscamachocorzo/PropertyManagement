@@ -95,7 +95,7 @@ namespace Million.PropertyManagement.Infrastructure.DataAccess.Contexts
 
                 entity.Property(e => e.Enabled).HasComment("estado Habilitado de la propiedad");
 
-                entity.Property(e => e.File).HasComment("Url de la imagen del archivo de la propiedad");
+                entity.Property(e => e.FileImage).HasComment("Url de la imagen del archivo de la propiedad");
 
                 entity.Property(e => e.IdProperty).HasComment("Id de la propiedad relacionada");
 

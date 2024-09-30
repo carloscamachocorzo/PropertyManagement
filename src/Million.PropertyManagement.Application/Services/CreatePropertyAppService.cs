@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Million.PropertyManagement.Application.Dtos;
@@ -14,15 +15,13 @@ namespace Million.PropertyManagement.Application.Services
     {
         private readonly IPropertyRepository _propertyRepository;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
         private string className = new StackFrame().GetMethod()?.ReflectedType?.Name ?? "CreatePropertyAppService";
         private readonly ILogger<CreatePropertyAppService> _logger;
         public CreatePropertyAppService(IPropertyRepository propertyRepository, IMapper mapper,
-            IConfiguration configuration, ILogger<CreatePropertyAppService> logger)
+             ILogger<CreatePropertyAppService> logger)
         {
             _propertyRepository = propertyRepository;
             _mapper = mapper;
-            _configuration = configuration;
             _logger= logger;
         }
 
@@ -42,5 +41,6 @@ namespace Million.PropertyManagement.Application.Services
                 return RequestResult<Property>.CreateError($"Error inesperado: {ex.Message}");
             }            
         }
+       
     }
 }

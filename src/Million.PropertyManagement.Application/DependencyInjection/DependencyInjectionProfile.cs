@@ -15,15 +15,17 @@ namespace Million.PropertyManagement.Application.DependencyInjection
             // Registrar AutoMapper
             services.AddAutoMapper(typeof(GlobalMapperProfile));
             // Registrar servicios de la capa Application            
-            services.AddScoped<ICreatePropertyAppService, CreatePropertyAppService>();            
+            services.AddScoped<ICreatePropertyAppService, CreatePropertyAppService>();
             services.AddScoped<IAuthAppService, AuthAppService>();
             services.AddScoped<IUserAppService, UserAppService>();
+            services.AddScoped<IPropertyImageAppService, PropertyImageAppService>();
             // Registrar servicios de la capa Domain
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITokenService, JwtService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
+            services.AddScoped<IPropertyImageRepository, PropertyImageRepository>();
 
             return services;
         }
