@@ -178,7 +178,7 @@ namespace Million.PropertyManagement.Api.Controllers
 
             if (!properties.Any()) // Si no se encuentran propiedades
             {
-                return NotFound(new { message = "No se encontraron propiedades que coincidan con los filtros aplicados." });                
+                return NotFound(new Dictionary<string, string> { { "message", "No se encontraron propiedades que coincidan con los filtros aplicados." } });
             }
 
             return Ok(properties); // Devolver las propiedades encontradas

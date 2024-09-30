@@ -17,10 +17,10 @@ namespace Million.PropertyManagement.Tests.Controllers
 
             // Simulamos que GetPropertiesAsync devuelva una lista de propiedades
             var properties = new List<PropertyDto>
-        {
-            new PropertyDto { Name = "Property 1", Price = 1000 },
-            new PropertyDto { Name = "Property 2", Price = 2000 }
-        };
+            {
+                new PropertyDto { Name = "Property 1", Price = 1000 },
+                new PropertyDto { Name = "Property 2", Price = 2000 }
+            };
 
             // Configuramos el mock para que devuelva esta lista cuando se llame con cualquier PropertyFilterDto
             mockPropertyAppService.Setup(service => service.GetPropertiesAsync(It.IsAny<PropertyFilterDto>()))
@@ -40,14 +40,19 @@ namespace Million.PropertyManagement.Tests.Controllers
             // Act: Llamamos al método que estamos probando, pasando el filtro
             var result = await controller.GetPropertiesWithFilters(filter);
 
-            // Assert: Verificamos que el resultado sea Ok y contenga las propiedades
-            var okResult = Assert.IsType<OkObjectResult>(result.ExecuteResultAsync);  // Verifica que el resultado sea Ok
-            var returnedProperties = Assert.IsAssignableFrom<IEnumerable<PropertyDto>>(okResult.Value);  // Verifica el tipo devuelto
-            Assert.Equal(2, returnedProperties.Count());  // Verifica que hay 2 propiedades en la lista
+            // Assert: Verificamos que el resultado sea OkObjectResult
+            var okResult = Assert.IsType<OkObjectResult>(result);
+
+            // Verificamos que el contenido del OkObjectResult es la lista de propiedades
+            var returnedProperties = Assert.IsType<List<PropertyDto>>(okResult.Value); // Verificamos el tipo de retorno
+            Assert.Equal(2, returnedProperties.Count);  // Verificamos que haya 2 propiedades en la lista
+            Assert.Equal("Property 1", returnedProperties[0].Name);  // Verificamos el primer elemento
+            Assert.Equal("Property 2", returnedProperties[1].Name);  // Verificamos el segundo elemento
         }
 
+
         [Fact]
-        public async Task GetPropertiesAsync_Should_Return_NotFound_When_No_Properties()
+        public async Task GetPropertiesWithFilters_Should_Return_NotFound_When_No_Properties()
         {
             // Arrange: Creamos mock de IPropertyAppService e IPropertyImageAppService
             var mockPropertyAppService = new Mock<IPropertyAppService>();
@@ -71,8 +76,12 @@ namespace Million.PropertyManagement.Tests.Controllers
             // Act: Llamamos al método que estamos probando, pasando el filtro
             var result = await controller.GetPropertiesWithFilters(filter);
 
-            // Assert: Verificamos que el resultado sea NotFound
-            Assert.IsType<NotFoundResult>(result.ExecuteResultAsync);  // Verifica que el resultado sea NotFound
+            // Assert: Verificamos que el resultado sea NotFoundObjectResult
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+
+            // Verificamos el contenido del NotFoundObjectResult
+            var value = Assert.IsType<Dictionary<string, string>>(notFoundResult.Value); // Convertimos a Dictionary<string, string>
+            Assert.Equal("No se encontraron propiedades que coincidan con los filtros aplicados.", value["message"]);
         }
     }
 }
