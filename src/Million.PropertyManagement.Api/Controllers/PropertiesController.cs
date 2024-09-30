@@ -35,15 +35,15 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="201">Si la propiedad fue creada exitosamente.</response>
         /// <response code="400">Si ocurrió un error controlado o no controlado durante la creación.</response>
 
-        [HttpPost("create")] 
-        [Authorize]   
-        public async Task<ActionResult<RequestResult<CreatePropertyResponseDto>>> CreateProperty([FromBody] PropertyDto propertyDto)
+        [HttpPost("create")]
+        [Authorize]
+        public async Task<IActionResult> CreateProperty([FromBody] PropertyDto propertyDto)
         {
             var result = await _propertyAppService.ExecuteAsync(propertyDto);
 
             if (result.IsSuccessful)
             {
-                return CreatedAtAction(nameof(CreateProperty), new { id = result.Result.IdProperty }, result);
+                return CreatedAtAction(nameof(CreateProperty), new { id = result.Result }, result);
             }
 
             // Verifica si fue un error controlado
@@ -84,7 +84,7 @@ namespace Million.PropertyManagement.Api.Controllers
             if (result.IsSuccessful)
             {
                 // Retornar éxito con la confirmación de la creación de la imagen
-                return Ok(RequestResult<bool>.CreateSuccessful(true));
+                return Ok(result);
             }
 
             if (result.IsError)
@@ -107,7 +107,7 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="400">Si ocurrió un error durante la actualización del precio.</response>
 
         [Authorize]
-        [HttpPatch("{propertyId}/price")]                
+        [HttpPatch("{propertyId}/price")]
         public async Task<IActionResult> UpdatePrice(int propertyId, decimal newPrice)
         {
             var result = await _propertyAppService.UpdatePriceAsync(propertyId, newPrice);
@@ -115,7 +115,7 @@ namespace Million.PropertyManagement.Api.Controllers
             if (result.IsSuccessful)
             {
                 // Retornar éxito con la confirmación de la creación de la imagen
-                return Ok(RequestResult<bool>.CreateSuccessful(true));
+                return Ok(result);
             }
 
             if (result.IsError)
@@ -138,8 +138,8 @@ namespace Million.PropertyManagement.Api.Controllers
         /// <response code="200">Si la propiedad fue actualizada exitosamente.</response>
         /// <response code="400">Si ocurrió un error durante la actualización de la propiedad.</response>
 
-        [HttpPut("{propertyId}")]        
-        [Authorize]        
+        [HttpPut("{propertyId}")]
+        [Authorize]
         public async Task<IActionResult> UpdateProperty(int propertyId, PropertyUpdateDto updateDto)
         {
             var result = await _propertyAppService.UpdatePropertyAsync(propertyId, updateDto);

@@ -38,7 +38,7 @@ namespace Million.PropertyManagement.Application.Services
         #endregion
 
         #region Metodos publicos        
-        public async Task<RequestResult<Property>> ExecuteAsync(PropertyDto propertyDto)
+        public async Task<RequestResult<int>> ExecuteAsync(PropertyDto propertyDto)
         {
             try
             {
@@ -46,12 +46,12 @@ namespace Million.PropertyManagement.Application.Services
                 Property property = _mapper.Map<Property>(propertyDto);
                 await _propertyRepository.AddAsync(property);
                 // Devuelve una respuesta exitosa
-                return RequestResult<Property>.CreateSuccessful(property);
+                return RequestResult<int>.CreateSuccessful(property.IdProperty, new string[] { "Nueva propiedad creada" });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, className, (new StackFrame().GetMethod())?.Name + (new StackFrame().GetFileLineNumber()));
-                return RequestResult<Property>.CreateError($"Error inesperado: {ex.Message}");
+                return RequestResult<int>.CreateError($"Error inesperado: {ex.Message}");
             }
         }
         
@@ -62,8 +62,8 @@ namespace Million.PropertyManagement.Application.Services
             {
                 // Paso 1: Validar que el precio no sea negativo
                 if (newPrice<=0)
-                {
-                    return new RequestResult<bool> { IsSuccessful = false, IsError = true, Messages = new string[] { $"el precio  [{newPrice}] debe ser mayor de cero" } };
+                {                    
+                    return RequestResult<bool>.CreateUnsuccessful(new string[] { $"el precio  [{newPrice}] debe ser mayor de cero" });
                 }
 
                 // Paso 2: Verificar si la propiedad existe en la base de datos
@@ -73,8 +73,8 @@ namespace Million.PropertyManagement.Application.Services
                     return new RequestResult<bool> { IsSuccessful = false, IsError = true, Messages = new string[] { $"No se encontro el id [{propertyId}] de la propiedad para actualizar el precio" } };
                 }
                 property.Price = newPrice;
-                await _propertyRepository.UpdateAsync(property);
-                return new RequestResult<bool> { IsSuccessful = true, Messages = new string[] { "precio actualizado correctamente" } };
+                await _propertyRepository.UpdateAsync(property);                
+                return RequestResult<bool>.CreateSuccessful(true, new string[] { "precio actualizado correctamente" });
 
             }
             catch (Exception ex)
@@ -92,15 +92,14 @@ namespace Million.PropertyManagement.Application.Services
                 // Paso 1: Verificar si la propiedad existe en la base de datos
                 var property = await _propertyRepository.GetByIdAsync(propertyId);
                 if (property == null)
-                {
-                    return new RequestResult<bool> { IsSuccessful = false, IsError = true, Messages = new string[] { $"No se encontro el id [{propertyId}] de la propiedad para actualizar" } };
+                {                    
+                    return RequestResult<bool>.CreateUnsuccessful(new string[] { $"No se encontro el id [{propertyId}] de la propiedad para actualizar" });
                 }
                 // Paso 2: Actualizar los campos de la propiedad
                 UpdatePropertyFields(property, updateDto);
 
-                await _propertyRepository.UpdateAsync(property);
-                return new RequestResult<bool> { IsSuccessful = true, Messages = new string[] { "propiedad actualizada correctamente" } };
-
+                await _propertyRepository.UpdateAsync(property);                
+                return RequestResult<bool>.CreateSuccessful(true, new string[] { "propiedad actualizada correctamente" });
             }
             catch (Exception ex)
             {

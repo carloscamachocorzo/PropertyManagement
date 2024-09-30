@@ -10,8 +10,8 @@ namespace Million.PropertyManagement.Application.Services.Interfaces
         /// Crea una nueva propiedad.
         /// </summary>
         /// <param name="propertyDto">Objeto con los datos de la propiedad a crear.</param>
-        /// <returns>Resultado de la creación, incluyendo la propiedad creada.</returns>
-        Task<RequestResult<Property>> ExecuteAsync(PropertyDto property);
+        /// <returns>Resultado de la creación, id creado.</returns>
+        Task<RequestResult<int>> ExecuteAsync(PropertyDto propertyDto);
         /// <summary>
         /// Actualiza el precio de una propiedad existente.
         /// </summary>
