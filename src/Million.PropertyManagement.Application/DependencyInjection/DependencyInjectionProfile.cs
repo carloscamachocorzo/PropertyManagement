@@ -15,7 +15,7 @@ namespace Million.PropertyManagement.Application.DependencyInjection
             // Registrar AutoMapper
             services.AddAutoMapper(typeof(GlobalMapperProfile));
             // Registrar servicios de la capa Application            
-            services.AddScoped<ICreatePropertyAppService, CreatePropertyAppService>();
+            services.AddScoped<IPropertyAppService, PropertyAppService>();
             services.AddScoped<IAuthAppService, AuthAppService>();
             services.AddScoped<IUserAppService, UserAppService>();
             services.AddScoped<IPropertyImageAppService, PropertyImageAppService>();

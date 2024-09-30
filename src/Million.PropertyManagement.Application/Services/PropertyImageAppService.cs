@@ -1,16 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Million.PropertyManagement.Application.Services.Interfaces;
 using Million.PropertyManagement.Common;
 using Million.PropertyManagement.Domain.Interfaces;
 using Million.PropertyManagement.Infrastructure;
-using Million.PropertyManagement.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Million.PropertyManagement.Application.Services
 {
@@ -20,6 +13,14 @@ namespace Million.PropertyManagement.Application.Services
         private readonly IPropertyRepository _propertyRepository;
         private string className = new StackFrame().GetMethod()?.ReflectedType?.Name ?? "CreatePropertyAppService";
         private readonly ILogger<PropertyImageAppService> _logger;
+
+        #region Builder        
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="PropertyImageAppService"/>.
+        /// </summary>
+        /// <param name="propertyImageRepository">Repositorio para la gestión de imágenes de propiedades.</param>
+        /// <param name="propertyRepository">Repositorio para la gestión de propiedades.</param>
+        /// <param name="logger">Instancia del logger para registrar información de la aplicación.</param>
         public PropertyImageAppService(IPropertyImageRepository propertyImageRepository,
             IPropertyRepository propertyRepository,
             ILogger<PropertyImageAppService> logger)
@@ -28,8 +29,9 @@ namespace Million.PropertyManagement.Application.Services
             _propertyRepository = propertyRepository;
             _logger = logger;
         }
+        #endregion
 
-        
+        #region Metodos publicos        
         public async Task<RequestResult<bool>> AddImageToPropertyAsync(int propertyId, string fileName)
         {
             try
@@ -61,5 +63,6 @@ namespace Million.PropertyManagement.Application.Services
                 return RequestResult<bool>.CreateError($"Error inesperado: {ex.Message}");
             }
         }
+        #endregion
     }
 }

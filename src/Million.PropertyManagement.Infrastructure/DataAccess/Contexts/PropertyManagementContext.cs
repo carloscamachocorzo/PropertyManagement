@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Million.PropertyManagement.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Million.PropertyManagement.Infrastructure.DataAccess.Contexts
 {

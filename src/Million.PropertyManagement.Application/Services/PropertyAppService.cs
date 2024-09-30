@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Million.PropertyManagement.Application.Dtos;
+using Million.PropertyManagement.Application.Dtos.Property;
 using Million.PropertyManagement.Application.Services.Interfaces;
 using Million.PropertyManagement.Common;
 using Million.PropertyManagement.Domain.Interfaces;
@@ -11,20 +9,35 @@ using System.Diagnostics;
 
 namespace Million.PropertyManagement.Application.Services
 {
-    public class CreatePropertyAppService : ICreatePropertyAppService
+    /// <summary>
+    /// Servicio de aplicación para gestionar propiedades.
+    /// </summary>
+    public class PropertyAppService : IPropertyAppService
     {
         private readonly IPropertyRepository _propertyRepository;
         private readonly IMapper _mapper;
         private string className = new StackFrame().GetMethod()?.ReflectedType?.Name ?? "CreatePropertyAppService";
-        private readonly ILogger<CreatePropertyAppService> _logger;
-        public CreatePropertyAppService(IPropertyRepository propertyRepository, IMapper mapper,
-             ILogger<CreatePropertyAppService> logger)
+        private readonly ILogger<PropertyAppService> _logger;
+
+        #region Builder
+        
+        /// <summary>
+        /// Inicializa una nueva instancia del servicio de propiedades.
+        /// </summary>
+        /// <param name="propertyRepository">Repositorio para gestionar propiedades.</param>
+        /// <param name="mapper">Instancia de mapeo para convertir entre DTOs y entidades.</param>
+        /// <param name="logger">Logger para registrar información y errores.</param>
+
+        public PropertyAppService(IPropertyRepository propertyRepository, IMapper mapper,
+             ILogger<PropertyAppService> logger)
         {
             _propertyRepository = propertyRepository;
             _mapper = mapper;
             _logger = logger;
         }
+        #endregion
 
+        #region Metodos publicos        
         public async Task<RequestResult<Property>> ExecuteAsync(PropertyDto propertyDto)
         {
             try
@@ -41,6 +54,7 @@ namespace Million.PropertyManagement.Application.Services
                 return RequestResult<Property>.CreateError($"Error inesperado: {ex.Message}");
             }
         }
+        
 
         public async Task<RequestResult<bool>> UpdatePriceAsync(int propertyId, decimal newPrice)
         {
@@ -63,6 +77,7 @@ namespace Million.PropertyManagement.Application.Services
                 return RequestResult<bool>.CreateError($"Error inesperado: {ex.Message}");
             }
         }
+        
 
         public async Task<RequestResult<bool>> UpdatePropertyAsync(int propertyId, PropertyUpdateDto updateDto)
         {
@@ -91,10 +106,14 @@ namespace Million.PropertyManagement.Application.Services
                 return RequestResult<bool>.CreateError($"Error inesperado: {ex.Message}");
             }
         }
+       
 
         public async Task<IEnumerable<Property>> GetPropertiesAsync(PropertyFilterDto filter)
         {
-            
+            // Registrar log los filtros aplicados
+            _logger.LogInformation("Filtros aplicados: Nombre={Name}, Precio Mínimo={MinPrice}, Precio Máximo={MaxPrice}, Año={Year}, Tamaño de página={PageSize}, Número de página={PageNumber}",
+                filter.Name, filter.MinPrice, filter.MaxPrice, filter.Year, filter.PageSize, filter.PageNumber);
+
             var properties = await _propertyRepository.GetPropertiesWithFiltersAsync(
             filter.Name, filter.MinPrice, filter.MaxPrice, filter.Year, filter.PageSize, filter.PageNumber);
 
@@ -110,5 +129,6 @@ namespace Million.PropertyManagement.Application.Services
 
             return (IEnumerable<Property>)propertyDtos;
         }
+        #endregion
     }
 }

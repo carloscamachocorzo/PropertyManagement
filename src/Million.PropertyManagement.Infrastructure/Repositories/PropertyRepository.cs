@@ -4,10 +4,16 @@ using Million.PropertyManagement.Infrastructure.DataAccess.Contexts;
 
 namespace Million.PropertyManagement.Infrastructure.Repositories
 {
+    /// <summary>
+    /// Repositorio para gestionar propiedades en la base de datos.
+    /// </summary>
     public class PropertyRepository : IPropertyRepository
     {
         private readonly PropertyManagementContext _context;
-
+        /// <summary>
+        /// Inicializa una nueva instancia del repositorio de propiedades.
+        /// </summary>
+        /// <param name="context">Contexto de la base de datos.</param>
         public PropertyRepository(PropertyManagementContext context)
         {
             _context = context;

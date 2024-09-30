@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Million.PropertyManagement.Application.Dtos;
+using Million.PropertyManagement.Application.Dtos.Property;
 using Million.PropertyManagement.Infrastructure;
 
 namespace Million.PropertyManagement.Application.Automapper

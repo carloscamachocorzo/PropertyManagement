@@ -10,12 +10,22 @@ namespace Million.PropertyManagement.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
+
+        #region Builder       
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="UserAppService"/>.
+        /// </summary>
+        /// <param name="userRepository">Repositorio para la gestión de usuarios.</param>
+        /// <param name="passwordHasher">Servicio para hashear contraseñas.</param>
         public UserAppService(IUserRepository userRepository, IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
 
         }
+        #endregion
+
+        #region Metodos publicos       
         public async Task<RequestResult<bool>> CreateUserAsync(RegisterUserRequestDto request)
         {
             // Validar si el usuario ya existe
@@ -46,6 +56,6 @@ namespace Million.PropertyManagement.Application.Services
             // Retornar el resultado exitoso
             return new RequestResult<bool> { IsSuccessful = true,  Messages = new string[] { "usuario creado correctamente" } };
         }
-
+        #endregion
     }
 }

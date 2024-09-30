@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="DataAccess\Contexts\" />
-    <Folder Include="Security\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

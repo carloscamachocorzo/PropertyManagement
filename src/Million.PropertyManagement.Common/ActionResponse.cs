@@ -4,7 +4,7 @@
     {
         public bool IsSuccessful { get; set; }
         public bool IsError { get; set; }
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
         public IEnumerable<string> Messages { get; set; }
         public T Result { get; set; }
 
@@ -13,7 +13,7 @@
             
         }
         // Constructor privado
-        private RequestResult(bool isSuccessful, bool isError, string errorMessage, IEnumerable<string> messages, T result)
+        private RequestResult(bool isSuccessful, bool isError, string? errorMessage, IEnumerable<string> messages, T result)
         {
             IsSuccessful = isSuccessful;
             IsError = isError;
