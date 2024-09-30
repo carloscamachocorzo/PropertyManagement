@@ -63,5 +63,33 @@ namespace Million.PropertyManagement.Application.Services
                 return RequestResult<bool>.CreateError($"Error inesperado: {ex.Message}");
             }
         }
+
+        public async Task<RequestResult<bool>> UpdatePropertyAsync(int propertyId, PropertyUpdateDto updateDto)
+        {
+            try
+            {
+                // Paso 1: Verificar si la propiedad existe en la base de datos
+                var property = await _propertyRepository.GetByIdAsync(propertyId);
+                if (property == null)
+                {
+                    return new RequestResult<bool> { IsSuccessful = false, IsError = true, Messages = new string[] { $"No se encontro el id [{propertyId}] de la propiedad para actualizar" } };
+                }
+                // Paso 2: Actualizar los campos de la propiedad
+                property.Name = updateDto.Name ?? property.Name;
+                property.Address = updateDto.Address ?? property.Address;
+                property.Price = updateDto.Price ?? property.Price;
+                property.CodeInternal = updateDto.CodeInternal ?? property.CodeInternal;
+                property.Year = updateDto.Year ?? property.Year;
+
+                await _propertyRepository.UpdateAsync(property);
+                return new RequestResult<bool> { IsSuccessful = true, Messages = new string[] { "propiedad actualizada correctamente" } };
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, className, (new StackFrame().GetMethod())?.Name + (new StackFrame().GetFileLineNumber()));
+                return RequestResult<bool>.CreateError($"Error inesperado: {ex.Message}");
+            }
+        }
     }
 }
