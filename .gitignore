@@ -16,3 +16,9 @@
 /src/Million.PropertyManagement.Common/obj
 /src/Million.PropertyManagement.Tests.Controllers/bin/Debug/net6.0
 /src/Million.PropertyManagement.Tests.Controllers/obj
+/src/Million.PropertyManagement.Api/bin/Release/net6.0
+/src/Million.PropertyManagement.Application/bin/Release/net6.0
+/src/Million.PropertyManagement.Common/bin/Release/net6.0
+/src/Million.PropertyManagement.Domain/bin/Release/net6.0
+/src/Million.PropertyManagement.Infrastructure/bin/Release/net6.0
+/src/Million.PropertyManagement.Tests.Controllers/bin/Release/net6.0
