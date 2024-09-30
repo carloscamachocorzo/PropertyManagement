@@ -14,3 +14,5 @@
 /.vs/ProjectEvaluation
 /src/Million.PropertyManagement.Common/bin/Debug/net6.0
 /src/Million.PropertyManagement.Common/obj
+/src/Million.PropertyManagement.Tests.Controllers/bin/Debug/net6.0
+/src/Million.PropertyManagement.Tests.Controllers/obj
