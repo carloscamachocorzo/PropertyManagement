@@ -91,5 +91,24 @@ namespace Million.PropertyManagement.Application.Services
                 return RequestResult<bool>.CreateError($"Error inesperado: {ex.Message}");
             }
         }
+
+        public async Task<IEnumerable<Property>> GetPropertiesAsync(PropertyFilterDto filter)
+        {
+            
+            var properties = await _propertyRepository.GetPropertiesWithFiltersAsync(
+            filter.Name, filter.MinPrice, filter.MaxPrice, filter.Year, filter.PageSize, filter.PageNumber);
+
+            // Proyectar entidades a DTO
+            var propertyDtos = properties.Select(p => new PropertyDto
+            {
+                Name = p.Name,
+                Address = p.Address,
+                Price = p.Price ?? 0,
+                CodeInternal = p.CodeInternal,
+                Year = p.Year ?? 0
+            });
+
+            return (IEnumerable<Property>)propertyDtos;
+        }
     }
 }

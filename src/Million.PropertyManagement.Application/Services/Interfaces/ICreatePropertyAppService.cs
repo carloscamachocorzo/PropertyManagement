@@ -9,5 +9,6 @@ namespace Million.PropertyManagement.Application.Services.Interfaces
         Task<RequestResult<Property>> ExecuteAsync(PropertyDto property);
         Task<RequestResult<bool>> UpdatePriceAsync(int propertyId, decimal newPrice);
         Task<RequestResult<bool>> UpdatePropertyAsync(int propertyId, PropertyUpdateDto updateDto);
+        Task<IEnumerable<Property>> GetPropertiesAsync(PropertyFilterDto filter);
     }
 }

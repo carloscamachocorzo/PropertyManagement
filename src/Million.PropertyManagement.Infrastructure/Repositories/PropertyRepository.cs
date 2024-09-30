@@ -1,4 +1,5 @@
-﻿using Million.PropertyManagement.Domain.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Million.PropertyManagement.Domain.Interfaces;
 using Million.PropertyManagement.Infrastructure.DataAccess.Contexts;
 
 namespace Million.PropertyManagement.Infrastructure.Repositories
@@ -29,19 +30,27 @@ namespace Million.PropertyManagement.Infrastructure.Repositories
             return await _context.Property.FindAsync(id);
         }
 
-        public Task<IEnumerable<Property>> GetPropertiesWithFiltersAsync(string city, string state, decimal? minPrice, decimal? maxPrice)
+        
+        public async Task<IEnumerable<Property>> GetPropertiesWithFiltersAsync(string name, decimal? minPrice, decimal? maxPrice, int? year, int pageSize, int pageNumber)
         {
-            throw new NotImplementedException();
-        }
+            var query = _context.Property.AsQueryable();
 
-        //public async Task<IEnumerable<Property>> GetPropertiesWithFiltersAsync(string city, string state, decimal? minPrice, decimal? maxPrice)
-        //{
-        //    return await _context.Property
-        //        .Where(p => (string.IsNullOrEmpty(city) || p.City == city) &&
-        //                    (string.IsNullOrEmpty(state) || p.ena == state) &&
-        //                    (!minPrice.HasValue || p.Price >= minPrice) &&
-        //                    (!maxPrice.HasValue || p.Price <= maxPrice))
-        //        .ToListAsync();
-        //}
+            if (!string.IsNullOrEmpty(name))
+                query = query.Where(p => p.Name.Contains(name));
+
+            if (minPrice.HasValue)
+                query = query.Where(p => p.Price >= minPrice);
+
+            if (maxPrice.HasValue)
+                query = query.Where(p => p.Price <= maxPrice);
+
+            if (year.HasValue)
+                query = query.Where(p => p.Year == year);
+            // Aplicar paginación
+            query = query.Skip((pageNumber - 1) * pageSize)
+                         .Take(pageSize);
+            return await query.AsNoTracking().ToListAsync();
+        }
+        
     }
 }

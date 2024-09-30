@@ -114,6 +114,11 @@ namespace Million.PropertyManagement.Api.Controllers
             return BadRequest(RequestResult<bool>.CreateError("Ocurrió un error al actualizar la propiedad."));
         }
 
-
+        [HttpGet]
+        public async Task<IActionResult> GetPropertiesWithFilters([FromQuery] PropertyFilterDto filter)
+        {
+            var properties = await _createPropertyAppService.GetPropertiesAsync(filter);
+            return Ok(properties);
+        }
     }
 }
