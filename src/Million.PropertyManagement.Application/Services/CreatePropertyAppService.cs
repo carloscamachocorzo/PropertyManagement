@@ -22,7 +22,7 @@ namespace Million.PropertyManagement.Application.Services
         {
             _propertyRepository = propertyRepository;
             _mapper = mapper;
-            _logger= logger;
+            _logger = logger;
         }
 
         public async Task<RequestResult<Property>> ExecuteAsync(PropertyDto propertyDto)
@@ -37,10 +37,31 @@ namespace Million.PropertyManagement.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, className, (new StackFrame().GetMethod())?.Name + (new StackFrame().GetFileLineNumber()));                           
+                _logger.LogError(ex, className, (new StackFrame().GetMethod())?.Name + (new StackFrame().GetFileLineNumber()));
                 return RequestResult<Property>.CreateError($"Error inesperado: {ex.Message}");
-            }            
+            }
         }
-       
+
+        public async Task<RequestResult<bool>> UpdatePriceAsync(int propertyId, decimal newPrice)
+        {
+            try
+            {
+                // Paso 1: Verificar si la propiedad existe en la base de datos
+                var property = await _propertyRepository.GetByIdAsync(propertyId);
+                if (property == null)
+                {
+                    return new RequestResult<bool> { IsSuccessful = false, IsError = true, Messages = new string[] { $"No se encontro el id [{propertyId}] de la propiedad para actualizar el precio" } };
+                }
+                property.Price = newPrice;
+                await _propertyRepository.UpdateAsync(property);
+                return new RequestResult<bool> { IsSuccessful = true, Messages = new string[] { "precio actualizado correctamente" } };
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, className, (new StackFrame().GetMethod())?.Name + (new StackFrame().GetFileLineNumber()));
+                return RequestResult<bool>.CreateError($"Error inesperado: {ex.Message}");
+            }
+        }
     }
 }

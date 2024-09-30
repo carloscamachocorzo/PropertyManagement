@@ -37,8 +37,8 @@ namespace Million.PropertyManagement.Application.Services
                 // Paso 1: Verificar si la propiedad existe en la base de datos
                 var property = await _propertyRepository.GetByIdAsync(propertyId);
                 if (property == null)
-                {
-                    return new RequestResult<bool> { IsSuccessful = false, Messages = new string[] { "No se encuentra la propiedad para adicionar la imagen" } };
+                {                    
+                    return new RequestResult<bool> { IsSuccessful = false, IsError = true, Messages = new string[] { $"No se encontro el id [{propertyId}] de la propiedad para adicionar la imagen" } };
                 }
 
                 // Paso 2: Crear un nuevo registro en la tabla PropertyImage

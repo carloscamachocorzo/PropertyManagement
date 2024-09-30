@@ -6,6 +6,7 @@ namespace Million.PropertyManagement.Application.Services.Interfaces
 {
     public interface ICreatePropertyAppService
     {
-        Task<RequestResult<Property>> ExecuteAsync(PropertyDto property); 
+        Task<RequestResult<Property>> ExecuteAsync(PropertyDto property);
+        Task<RequestResult<bool>> UpdatePriceAsync(int propertyId, decimal newPrice);
     }
 }

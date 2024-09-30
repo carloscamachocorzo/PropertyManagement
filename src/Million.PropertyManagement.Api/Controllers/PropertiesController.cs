@@ -41,7 +41,8 @@ namespace Million.PropertyManagement.Api.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("{propertyId}/image")]
+        
+        [HttpPost]
         [Authorize]
         public async Task<ActionResult<RequestResult<bool>>> AddPropertyImage(int propertyId, IFormFile imageFile)
         {
@@ -70,6 +71,26 @@ namespace Million.PropertyManagement.Api.Controllers
             // Retornar un 400 si hubo algún otro error
             return BadRequest(RequestResult<bool>.CreateError("Ocurrió un error al agregar la imagen."));
         }
+        [HttpPut("{propertyId}/price")]
+        public async Task<IActionResult> UpdatePrice(int propertyId, decimal newPrice)
+        {
+            var result = await _createPropertyAppService.UpdatePriceAsync(propertyId, newPrice);
+
+            if (result.IsSuccessful)
+            {
+                // Retornar éxito con la confirmación de la creación de la imagen
+                return Ok(RequestResult<bool>.CreateSuccessful(true));
+            }
+
+            if (result.IsError)
+            {
+                // Retornar error controlado
+                return BadRequest(result);
+            }
+
+            // Retornar un 400 si hubo algún otro error
+            return BadRequest(RequestResult<bool>.CreateError("Ocurrió un error al actualizar el precio."));
+        }   
 
     }
 }
